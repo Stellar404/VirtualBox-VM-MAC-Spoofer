@@ -1,15 +1,14 @@
 #!/bin/bash
 
-#
-# -- Spoof Vbox VM MAC Address --
-#
 
-shuf -n 1 mac-list $generatedMAC
 
-vboxmanage modifyvm VMNAME --macaddress1 $generatedMAC
 
-vboxmanage controlvm VMNAME acpipowerbutton --type headless
-# THIS will shut the server down gracefully
+MACADDR="$(shuf -n 1 mac-list)"
 
-vboxmanage startvm VMNAME --type headless
+vboxmanage controlvm debian0 acpipowerbutton --typeheadless
 
+sleep 7
+
+vboxmanage modifyvm debian0 --macaddress1 "${MACADDR}"
+
+vboxmanage startvm debian0 --type headless
